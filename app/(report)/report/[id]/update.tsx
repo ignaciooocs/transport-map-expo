@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, Switch, ScrollView } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Switch, ScrollView, ActivityIndicator } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useGlobalStore } from "@/stores/globalStore";
@@ -33,6 +33,7 @@ export default function UpdateFormTransport() {
   const { currentLocation } = useGlobalStore();
   const { user } = useUserStore();
   const [token, setToken] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const [inputs, setInputs] = useState<Inputs>({
     type: "BUS",
@@ -56,7 +57,7 @@ export default function UpdateFormTransport() {
     // Cargar los datos del reporte para pre-rellenar el formulario
     const fetchReportData = async () => {
       try {
-        const response = await fetch(`${apiUrl}report/${id}`, {
+        const response = await fetch(`${"https://transport-map.onrender.com/"}report/${id}`, {
           headers: {
             "Authorization": `Bearer ${token}`,
           },
@@ -89,13 +90,14 @@ export default function UpdateFormTransport() {
   }
 
   const onSubmit = async () => {
+    setLoading(true);
     if (!token) {
       alert("No se encontró el token de Firebase");
       return;
     }
 
     try {
-      const response = await fetch(`${apiUrl}report/${id}`, {
+      const response = await fetch(`${"https://transport-map.onrender.com/"}report/${id}`, {
         method: "PATCH", // Usar PUT para actualizar
         headers: {
           "Content-Type": "application/json",
@@ -114,6 +116,7 @@ export default function UpdateFormTransport() {
       console.log("Ocurrió un error al actualizar el reporte", error);
       alert("Ocurrió un error al actualizar el reporte");
     } finally {
+      setLoading(false);
       queryClient.invalidateQueries({ queryKey: [id] });
       queryClient.invalidateQueries({ queryKey: ["markets" + user.maxDistance] });
       router.back();
@@ -274,9 +277,16 @@ const predefinedCoordinates = [
           <TouchableOpacity
             className="bg-blue-500 rounded-md px-4 py-2 flex-row items-center"
             onPress={onSubmit}
+            disabled={loading}
           >
-            <Text className="text-white font-semibold mr-1">Actualizar</Text>
-            <MaterialIcons name="update" size={16} color="white" />
+            {loading && <ActivityIndicator size="small" color="white" />}
+            {!loading && (
+              <View className="flex-row items-center">
+                <Text className="text-white font-semibold mr-1">Actualizar</Text>
+                <MaterialIcons name="update" size={16} color="white" />
+              </View>
+            )}
+            
           </TouchableOpacity>
         </View>
 

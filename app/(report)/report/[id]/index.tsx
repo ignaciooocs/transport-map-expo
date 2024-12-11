@@ -12,7 +12,7 @@ export default function Report () {
 
     async function deleteReport () {
         try {
-            await fetch(apiUrl + `report/${id}`, { method: "DELETE" })
+            await fetch("https://transport-map.onrender.com/" + `report/${id}`, { method: "DELETE" })
         } catch (error) {
             alert("Ocurrio un error al eliminar el reporte")
         } finally {
@@ -24,7 +24,7 @@ export default function Report () {
     const { data, isLoading, error } = useQuery({
         queryKey: [id],
         queryFn: async () => {
-            const response = await fetch(apiUrl + `report/${id}`)
+            const response = await fetch("https://transport-map.onrender.com/" + `report/${id}`)
             const data = await response.json()
             return data
         }

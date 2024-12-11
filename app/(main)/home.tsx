@@ -21,7 +21,7 @@ export default function Home() {
         queryKey: ['markets' + user.maxDistance],
         queryFn: async () => {
             try {
-                const response = await fetch(`${apiUrl}report/nearby?longitude=${currentLocation?.longitude}&latitude=${currentLocation?.latitude}&maxDistance=${user.maxDistance}`);
+                const response = await fetch(`${"https://transport-map.onrender.com/"}report/nearby?longitude=${currentLocation?.longitude}&latitude=${currentLocation?.latitude}&maxDistance=${user.maxDistance}`);
                 const data = await response.json();
                 console.log(data);
                 return data
@@ -62,7 +62,13 @@ export default function Home() {
 
     if (!currentLocation?.latitude || !currentLocation?.longitude) return <AlternativeMap />
 
-    if (isLoading) return <ActivityIndicator size="large" />
+    if (isLoading) {
+        return (
+            <View className="w-full h-full justify-center items-center">
+                <ActivityIndicator size="large" />
+            </View>
+        )
+    }
     if (error) return <View>Error</View>
 
     return (

@@ -17,7 +17,7 @@ export default function Comment() {
     const { data, isLoading, error } = useQuery({
         queryKey: [`comments-${id}`],
         queryFn: async () => {
-            const response = await fetch(apiUrl + `comment/report/${id}`)
+            const response = await fetch("https://transport-map.onrender.com/" + `comment/report/${id}`)
             const data = await response.json()
             return data
         }
@@ -37,7 +37,7 @@ export default function Comment() {
                 return;
             }
     
-            const response = await fetch(apiUrl + "comment", {
+            const response = await fetch("https://transport-map.onrender.com/" + "comment", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

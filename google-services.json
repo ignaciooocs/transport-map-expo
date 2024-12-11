@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "620023536972",
+    "project_id": "transport-map-31a5f",
+    "storage_bucket": "transport-map-31a5f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:620023536972:android:03a56a0825fd975071c3e9",
+        "android_client_info": {
+          "package_name": "com.example.firebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "620023536972-c4on79u0n8nhqqubfu9q6e0hntignfle.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwEMpFh8WxxqHfGp8EbdaHmxRChHUbOok"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "620023536972-c4on79u0n8nhqqubfu9q6e0hntignfle.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "620023536972-nq66029eicbgoascbmk2cfa68l33jsh1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.firebase"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

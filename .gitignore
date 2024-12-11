@@ -16,10 +16,6 @@ eas.json
 
 # Android
 /android
-google-services.json
-
-# iOS
-GoogleService-Info.plist
 
 # macOS
 .DS_Store

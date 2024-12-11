@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, Switch, ScrollView } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Switch, ScrollView, ActivityIndicator } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useGlobalStore } from "@/stores/globalStore";
@@ -28,6 +28,7 @@ export default function FormTransport() {
   const queryClient = useQueryClient()
   const {currentLocation} = useGlobalStore();
   const [token, setToken] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -97,6 +98,7 @@ export default function FormTransport() {
   };
   
   const onSubmit = async () => {
+    setLoading(true);
     if (!validateInputs()) {
       return;
     }
@@ -107,7 +109,7 @@ export default function FormTransport() {
     }
   
     try {
-      const response = await fetch(apiUrl + 'report', {
+      const response = await fetch("https://transport-map.onrender.com/" + 'report', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -131,6 +133,7 @@ export default function FormTransport() {
       alert("Ocurrió un error al enviar el reporte");
     } finally {
       router.back();
+      setLoading(false);
     }
   };
   
@@ -249,9 +252,16 @@ export default function FormTransport() {
           <TouchableOpacity
             className="bg-blue-500 rounded-md px-4 py-2 flex-row items-center"
             onPress={onSubmit}
+            disabled={loading}
           >
-            <Text className="text-white font-semibold mr-1">Enviar</Text>
-            <MaterialIcons name="send" size={16} color="white" />
+            {loading && <ActivityIndicator size="small" color="white" />}
+            {!loading && (
+              <View className="flex-row items-center">
+                <Text className="text-white font-semibold mr-1">Enviar</Text>
+                <MaterialIcons name="send" size={16} color="white" />
+              </View>
+            )}
+            
           </TouchableOpacity>
         </View>
       </View>

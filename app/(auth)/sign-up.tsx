@@ -47,7 +47,7 @@ export default function SignUp() {
 
       if (userCredential) {
         // Solo realiza la solicitud a tu backend si el registro en Firebase fue exitoso
-        const response = await fetch(apiUrl + "user", {
+        const response = await fetch("https://transport-map.onrender.com/" + "user", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

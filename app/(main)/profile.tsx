@@ -1,4 +1,4 @@
-import { Text, View, Image, TouchableOpacity } from "react-native";
+import { Text, View, Image, TouchableOpacity, ActivityIndicator } from "react-native";
 import auth from "@react-native-firebase/auth";
 import { useEffect, useState } from "react";
 import { getFirebaseToken } from "@/utils/getFirebaseToken";
@@ -8,9 +8,10 @@ import { router } from "expo-router";
 
 export default function Profile() {
     const apiUrl = process.env.EXPO_PUBLIC_API_URL as string;
-    console.log(apiUrl);
+    console.log("https://transport-map.onrender.com/");
     const [token, setToken] = useState("");
     const { user, setUser } = useUserStore();
+    const [loading, setLoading] = useState(false);
     console.log(user);
     const [selectedDistance, setSelectedDistance] = useState(user.maxDistance || 5000); // Valor inicial en km
 
@@ -35,9 +36,10 @@ export default function Profile() {
 
     // Función para manejar la actualización de la distancia
     const updateDistance = async () => {
+        setLoading(true);
         if (user && user.email) {
             try {
-                const response = await fetch(apiUrl +'user/distance', {
+                const response = await fetch("https://transport-map.onrender.com/" +'user/distance', {
                     method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json',
@@ -58,6 +60,7 @@ export default function Profile() {
             } catch (error) {
                 console.error('Error al actualizar la distancia:', error);
             } finally {
+                setLoading(false);
                 router.push('/(main)/home');
             }
         }
@@ -113,8 +116,12 @@ export default function Profile() {
             <TouchableOpacity
                 className="bg-blue-500 py-3 px-6 rounded-lg mt-6"
                 onPress={updateDistance}
+                disabled={loading}
             >
-                <Text className="text-white font-bold text-lg">Actualizar Distancia</Text>
+                {loading 
+                ? <ActivityIndicator size="small" color="white" />
+                : <Text className="text-white font-bold text-lg">Actualizar Distancia</Text>
+                }
             </TouchableOpacity>
         </View>
     );

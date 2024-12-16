@@ -1,12 +1,13 @@
-import { ActivityIndicator, TouchableOpacity, View } from "react-native";
-import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps"
-import AlternativeMap from "../../components/AlternativeMap";
-import { useGlobalStore } from "@/stores/globalStore";
-import { useQuery } from "@tanstack/react-query";
+import { SimpleLineIcons } from "@expo/vector-icons";
 import Icon from "@expo/vector-icons/Ionicons";
+import { useQuery } from "@tanstack/react-query";
 import { router, useNavigation } from "expo-router";
 import { useEffect, useState } from "react";
-import { SimpleLineIcons } from "@expo/vector-icons";
+import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import AlternativeMap from "../../components/AlternativeMap";
+ 
+import { useGlobalStore } from "@/stores/globalStore";
 import { useUserStore } from "@/stores/userStore";
 
 export default function Home() {
@@ -44,8 +45,8 @@ export default function Home() {
     useEffect(() => {
         navigate.setOptions({ 
             headerRight: () => (
-                <TouchableOpacity className="mr-2" onPress={handleRefetch}>
-                    <SimpleLineIcons className="pr-4" name="refresh" size={24} color="black" />
+                <TouchableOpacity className="mr-4" onPress={handleRefetch}>
+                    <SimpleLineIcons className="pr-4" name="refresh" size={28} color="black" />
                 </TouchableOpacity>
             )
          })
@@ -60,7 +61,10 @@ export default function Home() {
         else return null
     }
 
-    if (!currentLocation?.latitude || !currentLocation?.longitude) return <AlternativeMap />
+    if (!currentLocation?.latitude || !currentLocation?.longitude) {
+       return <AlternativeMap />
+    }
+
 
     if (isLoading) {
         return (
@@ -70,6 +74,7 @@ export default function Home() {
         )
     }
     if (error) return <View>Error</View>
+
 
     return (
         <View className="w-full h-full">

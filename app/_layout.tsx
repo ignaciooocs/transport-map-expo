@@ -39,7 +39,6 @@ const fetchUserDetails = async (email: string) => {
   }
 };
 
-
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged)
     return () => subscriber()
@@ -52,11 +51,12 @@ const fetchUserDetails = async (email: string) => {
 
     if (user && !inAuthGroup) {
       router.replace('/(main)/home')
-    } else if (!user && inAuthGroup) {
+    }else if (!user && inAuthGroup) {
       router.replace('/')
     }
   }, [user, initializing]);
 
+  
   if (initializing) {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>

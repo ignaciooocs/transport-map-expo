@@ -1,23 +1,20 @@
 import { useGlobalStore } from '@/stores/globalStore';
 import * as Location from 'expo-location'; 
-import { useNavigation } from 'expo-router';
-import { useEffect } from 'react';
-import { Button, Linking } from 'react-native';
+import * as Updates from 'expo-updates'; // Importar expo-updates
+import { useState, useEffect } from 'react';
+import { Alert, Linking } from 'react-native';
 
 export function useGetCurrentLocation() {
-    const navigation = useNavigation();
     const { setCurrentLocation } = useGlobalStore();
+    const [permissionStatus, setPermissionStatus] = useState<'granted' | 'denied' | null | Location.PermissionStatus>(null);
 
-    function intent() {
-        navigation.setOptions({ 
-            headerRight: () =>  (
-                <Button 
-                    title='Activar ubicación' 
-                    onPress={() => Linking.openSettings()} 
-                />
-            )  
-        })
-    }
+        const handleReloadApp = async () => {
+            try {
+                await Updates.reloadAsync(); // Recarga la app
+            } catch (error) {
+                console.error("Error al recargar la app: ", error);
+            }
+        };
 
     useEffect(() => {
         let locationSubscription: any;
@@ -25,14 +22,24 @@ export function useGetCurrentLocation() {
         (async () => {
             // Solicita permisos
             let { status } = await Location.requestForegroundPermissionsAsync();
+            setPermissionStatus(status);
+
             if (status !== 'granted') {
-                alert("Recuerda que para usar todas las funciones de la app es necesario activar la ubicación");
-                intent();
+                Alert.alert(
+                  "Permiso denegado",
+                  "Recuerda que para usar todas las funciones de la app es necesario activar la ubicación",
+                  [{ text: "Activar", onPress: () => { ; 
+                    Alert.alert(
+                      'Activar ubicación', 
+                      'Una vez activada la ubicación, es necesario actualizar',
+                      [{ text: 'Actualizar', onPress: () => handleReloadApp() }]
+                    ); 
+                    Linking.openSettings()
+                  }},
+                  ]
+                );
                 return;
             }
-
-            // let location = await Location.getCurrentPositionAsync({});
-            // setCurrentLocation({ latitude: location.coords.latitude, longitude: location.coords.longitude });
 
             // Suscribirse a actualizaciones de ubicación en tiempo real
             locationSubscription = await Location.watchPositionAsync({ 
@@ -55,4 +62,6 @@ export function useGetCurrentLocation() {
             }
         };
     }, []);
+
+    return { permissionStatus };
 }

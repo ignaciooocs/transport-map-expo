@@ -8,7 +8,7 @@ import { router } from "expo-router";
 
 export default function Profile() {
     const apiUrl = process.env.EXPO_PUBLIC_API_URL as string;
-    console.log("https://transport-map.onrender.com/");
+    console.log(apiUrl);
     const [token, setToken] = useState("");
     const { user, setUser } = useUserStore();
     const [loading, setLoading] = useState(false);
@@ -39,7 +39,7 @@ export default function Profile() {
         setLoading(true);
         if (user && user.email) {
             try {
-                const response = await fetch("https://transport-map.onrender.com/" +'user/distance', {
+                const response = await fetch(apiUrl +'user/distance', {
                     method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json',

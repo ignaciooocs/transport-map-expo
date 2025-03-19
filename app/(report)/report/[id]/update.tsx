@@ -57,7 +57,7 @@ export default function UpdateFormTransport() {
     // Cargar los datos del reporte para pre-rellenar el formulario
     const fetchReportData = async () => {
       try {
-        const response = await fetch(`${"https://transport-map.onrender.com/"}report/${id}`, {
+        const response = await fetch(`${apiUrl}report/${id}`, {
           headers: {
             "Authorization": `Bearer ${token}`,
           },
@@ -97,7 +97,7 @@ export default function UpdateFormTransport() {
     }
 
     try {
-      const response = await fetch(`${"https://transport-map.onrender.com/"}report/${id}`, {
+      const response = await fetch(`${apiUrl}report/${id}`, {
         method: "PATCH", // Usar PUT para actualizar
         headers: {
           "Content-Type": "application/json",

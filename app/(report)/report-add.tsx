@@ -109,7 +109,7 @@ export default function FormTransport() {
     }
   
     try {
-      const response = await fetch("https://transport-map.onrender.com/" + 'report', {
+      const response = await fetch(apiUrl + 'report', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

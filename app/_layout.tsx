@@ -27,7 +27,7 @@ export default function RootLayout() {
 
 const fetchUserDetails = async (email: string) => {
   try {
-    const response = await fetch("https://transport-map.onrender.com/" + `user/findByEmail/${email}`);
+    const response = await fetch(apiUrl + `user/findByEmail/${email}`);
     const data = await response.json();
     console.log(data); // Ver los datos que recibimos
 

@@ -1,11 +1,14 @@
 import { KeyboardAvoidingView, Text, TextInput, TouchableOpacity, View } from "react-native";
-import auth from "@react-native-firebase/auth";
+import { getAuth } from "@react-native-firebase/auth";
+import { getApp } from "@react-native-firebase/app";
 import { useState } from "react";
 import { FirebaseError } from "firebase/app";
 import { Link } from "expo-router";
 
 export default function SignUp() {
   const apiUrl = process.env.EXPO_PUBLIC_API_URL as string;
+
+  const auth = getAuth(getApp());
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -43,7 +46,7 @@ export default function SignUp() {
     if (!validateInputs()) return; // Si la validación falla, detiene el flujo
 
     try {
-      const userCredential = await auth().createUserWithEmailAndPassword(email, password);
+      const userCredential = await auth.createUserWithEmailAndPassword(email, password);
 
       if (userCredential) {
         // Solo realiza la solicitud a tu backend si el registro en Firebase fue exitoso

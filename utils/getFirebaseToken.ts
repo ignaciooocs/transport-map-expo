@@ -1,8 +1,9 @@
-import auth from '@react-native-firebase/auth';
+import { getAuth } from '@react-native-firebase/auth';
+import { getApp } from '@react-native-firebase/app';
 
 // Función para obtener el token de Firebase
 export async function getFirebaseToken() {
-    const currentUser = auth().currentUser;
+    const currentUser = getAuth(getApp()).currentUser;
 
     if (currentUser) {
         try {

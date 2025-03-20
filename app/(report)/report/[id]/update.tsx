@@ -6,7 +6,8 @@ import { useGlobalStore } from "@/stores/globalStore";
 import { getFirebaseToken } from "@/utils/getFirebaseToken";
 import { useQueryClient } from '@tanstack/react-query'
 import { router, useLocalSearchParams } from "expo-router";
-import auth from "@react-native-firebase/auth";
+import { getAuth} from "@react-native-firebase/auth";
+import { getApp } from "@react-native-firebase/app";
 import { useUserStore } from "@/stores/userStore";
 
 interface Inputs {
@@ -26,9 +27,10 @@ interface Props {
 }
 
 export default function UpdateFormTransport() {
-    const { id } = useLocalSearchParams();
-
   const apiUrl = process.env.EXPO_PUBLIC_API_URL as string;
+  const auth = getAuth(getApp());
+  const { id } = useLocalSearchParams();
+
   const queryClient = useQueryClient();
   const { currentLocation } = useGlobalStore();
   const { user } = useUserStore();
@@ -238,7 +240,7 @@ const predefinedCoordinates = [
         />
 
         {
-        auth().currentUser?.email === "ignacio@email.com" && 
+        auth.currentUser?.email === "ignacio@email.com" && 
             <View className="flex-row items-center justify-between my-2">
                 <Text className="text-gray-700 font-semibold">Usar coordenadas predefinidas</Text>
                 <Switch

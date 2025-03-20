@@ -1,10 +1,13 @@
 import { KeyboardAvoidingView, Text, TextInput, TouchableOpacity, View } from "react-native";
-import auth from "@react-native-firebase/auth";
+import { getAuth} from "@react-native-firebase/auth";
+import { getApp } from "@react-native-firebase/app";
 import { useState } from "react";
 import { FirebaseError } from "firebase/app";
 import { Link } from "expo-router";
 
 export default function SignIn() {
+
+  const auth = getAuth(getApp());
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [focus, setFocus] = useState({
@@ -33,7 +36,7 @@ export default function SignIn() {
     if (!validateInputs()) return; // Si la validación falla, detiene el flujo
 
     try {
-      await auth().signInWithEmailAndPassword(email, password);
+      await auth.signInWithEmailAndPassword(email, password);
     } catch (error) {
       const err = error as FirebaseError;
       alert("Inicio de sesión fallido: " + err.message);

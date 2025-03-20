@@ -1,11 +1,13 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { router, useLocalSearchParams } from "expo-router";
 import { ActivityIndicator, Button, Text, View } from "react-native";
-import auth from "@react-native-firebase/auth";
+import { getAuth } from "@react-native-firebase/auth";
+import { getApp } from "@react-native-firebase/app";
 
 export default function Report () {
     const apiUrl = process.env.EXPO_PUBLIC_API_URL as string;
     
+    const auth = getAuth(getApp());
 
     const { id } = useLocalSearchParams();
     const queryClient = useQueryClient()
@@ -51,7 +53,7 @@ export default function Report () {
 
     return (
         <View className="p-4 pt-6 gap-y-4 bg-white w-full h-full">
-            {data.emailUser === auth().currentUser?.email && (
+            {data.emailUser === auth.currentUser?.email && (
                 <View className="flex-row justify-around">
                     <Button title="eliminar reporte" color="#f55" onPress={deleteReport} />
                     <Button title="editar reporte" color="#2ad" onPress={() => router.push(`/report/${id}/update`)} />

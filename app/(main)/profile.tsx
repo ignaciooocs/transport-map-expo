@@ -1,25 +1,26 @@
 import { Text, View, Image, TouchableOpacity, ActivityIndicator } from "react-native";
-import auth from "@react-native-firebase/auth";
+import { getAuth } from "@react-native-firebase/auth";
 import { useEffect, useState } from "react";
 import { getFirebaseToken } from "@/utils/getFirebaseToken";
 import { useUserStore } from "@/stores/userStore";
 import { Picker } from "@react-native-picker/picker";
 import { router } from "expo-router";
+import { getApp } from "@react-native-firebase/app";
 
 export default function Profile() {
     const apiUrl = process.env.EXPO_PUBLIC_API_URL as string;
-    console.log(apiUrl);
+
+    const authInstance = getAuth(getApp());
+
     const [token, setToken] = useState("");
     const { user, setUser } = useUserStore();
     const [loading, setLoading] = useState(false);
-    console.log(user);
     const [selectedDistance, setSelectedDistance] = useState(user.maxDistance || 5000); // Valor inicial en km
 
     useEffect(() => {
         (async () => {
             await getFirebaseToken()
                 .then((token) => {
-                    console.log(token);
                     setToken(token);
                 })
                 .catch((error) => console.log(error));
@@ -28,7 +29,7 @@ export default function Profile() {
 
     const signOut = async () => {
         try {
-            await auth().signOut();
+            await authInstance.signOut();
         } catch (error) {
             console.log(error);
         }
@@ -74,7 +75,7 @@ export default function Profile() {
                 className="w-24 h-24 rounded-full mb-6"
             />
             <Text className="text-lg text-gray-600 mb-8">
-                Correo: {auth().currentUser?.email}
+                Correo: {authInstance.currentUser?.email}
             </Text>
             <TouchableOpacity
                 className="bg-blue-500 py-3 px-6 rounded-lg"

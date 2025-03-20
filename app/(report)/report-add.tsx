@@ -91,6 +91,7 @@ export default function FormTransport() {
   
     if (!inputs.direccion.trim()) {
       alert("Debes seleccionar una dirección.");
+      setLoading(false);
       return false;
     }
   
@@ -100,6 +101,7 @@ export default function FormTransport() {
   const onSubmit = async () => {
     setLoading(true);
     if (!validateInputs()) {
+      setLoading(false);
       return;
     }
   
